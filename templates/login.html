@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>登录</title>
+    <link rel="icon" href="/static/icon/myFavicon.ico" type="image/x-icon">
+    <!-- Bootstrap -->
+    <link href="../static/bootstrap/5.3.0/css/bootstrap.css" rel="stylesheet">
+    <script src="../static/bootstrap/5.3.0/js/bootstrap.js"></script>
+    <style>
+        body {
+            background: #5bc0de;
+        }
+
+        .content-field {
+            margin-top: 8vh;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .title {
+            margin: 10px auto;
+            font-size: 25px;
+            font-weight: normal;
+        }
+
+        .text {
+            margin-top: 10px;
+            font-size: 17px;
+            font-weight: normal;
+        }
+
+        form div {
+            margin-top: 8px;
+        }
+
+        #button_login {
+            margin-top: 20px;
+            width: 100%;
+            font-size: 17px;
+        }
+
+        #brand {
+            font-family: "楷体", serif;
+            font-weight: bold;
+            font-size: 40px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .error_message{
+            color: red;
+        }
+
+        #captcha_img{
+            float: right;
+            width: 130px;
+            height: 40px;
+            cursor: pointer;
+        }
+
+        #captcha{
+            width: 55%;
+            float: left;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container content-field">
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <div id="brand">学生信息管理系统</div>
+            <div class="text-center">
+                <label class="title">用户登录</label>
+            </div>
+            <form action="/login" method="post">
+                <div>
+                    <label class="text" for="username">用户名</label>
+                    <input type="text" class="form-control" id="username" name="username">
+                </div>
+                <div>
+                    <label class="text" for="password">密码</label>
+                    <input type="password" class="form-control" id="password" name="password">
+                </div>
+                <div style="float: left;width: 100%; margin-bottom: 20px">
+                    <label class="text" for="captcha" style="display: block;">验证码（不区分大小写）</label>
+                    <input type="text" class="form-control" id="captcha" name="captcha">
+                    <!-- 每次点击图片时都会访问一个不同url，这样就可以保证当点击图片时会强制刷新图片的url，从而实现刷新验证码 -->
+                    <img src="{{ url_for('captcha') }}" alt="验证码" id="captcha_img" onclick="this.src='{{ url_for('captcha') }}?timestamp=' + new Date().getTime()">
+                </div>
+                <div style="clear: both"></div>
+                <div class="text-center">
+                    <label class="error_message" id="error_message">{{ error_message }}</label>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary" id="button_login">登录</button>
+                </div>
+
+            </form>
+        </div>
+        <div class="col-sm-4"></div>
+    </div>
+</div>
+<script>
+
+</script>
+</body>
+</html>
+

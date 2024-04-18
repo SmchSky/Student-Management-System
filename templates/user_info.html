@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zn">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="icon" href="/static/icon/myFavicon.ico" type="image/x-icon">
+    <!-- Bootstrap -->
+    <link href="../static/bootstrap/5.3.0/css/bootstrap.css" rel="stylesheet">
+    <script src="../static/bootstrap/5.3.0/js/bootstrap.bundle.js"></script>
+    <style>
+        body {
+            background: #a3d3f6;
+        }
+
+        .title {
+            font-size: 140%;
+        }
+
+        .container {
+            max-width: 1060px;
+        }
+
+
+        .my-item {
+            margin: auto 20px;
+        }
+
+        #brand {
+            font-family: "楷体", serif;
+            font-weight: bold;
+            font-size: 25px;
+        }
+
+        tr td:last-child a {
+            width: 70px;
+        }
+
+        tr td:last-child button {
+            width: 70px;
+        }
+
+        td {
+            width: 33.3%;
+        }
+
+        tr td {
+            text-align: center;
+        }
+
+        .not_allowed {
+            cursor: not-allowed;
+        }
+
+        .error_message {
+            color: red;
+        }
+
+        table tr {
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+            height: 50px;
+        }
+
+        form div{
+            margin: 15px auto;
+        }
+
+        form label{
+            margin-right: 10px;
+        }
+
+        form input {
+            width: 50%;
+        }
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg" style="background-color: #d2e9fa;">
+    <div class="container">
+        <span class="navbar-brand" id="brand">学生信息管理系统</span>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item my-item">
+                <a class="nav-link" role="button" href="/">
+                    学生信息展示
+                </a>
+            </li>
+            <li class="nav-item my-item">
+                <a class="nav-link" role="button" href="/?template=update_index">
+                    批量修改年龄
+                </a>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    管理员 {{ username }} 您好！
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item" href="/user_info">我的信息</a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider"/>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="/logout">退出登录</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card" style="margin-top:15px;">
+                <div class="card-header">
+                    <span class="title">我的信息</span>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tr>
+                            <td>用户名</td>
+                            <td>{{ username }}</td>
+                            <td>
+                                <a class="btn btn-warning btn-sm not_allowed">修改</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>密码</td>
+                            <td>********</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#change_password_modal">修改
+                                </button>
+                                <!-- Modal-1-change_password -->
+                                <div class="modal fade" id="change_password_modal" tabindex="-1">
+                                    <div class="modal-dialog modal-m modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5">
+                                                    修改密码
+                                                </h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close" onclick="document.getElementById('error_message').innerText = ''"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post" action="/change_password" id="change_password_form">
+                                                    <div>
+                                                        <label for="old_password" class="form-label">旧的密码</label>
+                                                        <input type="password" id="old_password"
+                                                               name="old_password">
+                                                    </div>
+                                                    <div>
+                                                        <label for="new_password" class="form-label">新的密码</label>
+                                                        <input type="password" id="new_password"
+                                                               name="new_password">
+                                                    </div>
+                                                    <div>
+                                                        <label for="confirmed_password"
+                                                               class="form-label">确认密码</label>
+                                                        <input type="password" id="confirmed_password"
+                                                               name="confirmed_password">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <div class="error_message" id="error_message"></div>
+                                                <button type="button" class="btn btn-warning" onclick="form_submit()">
+                                                    修改
+                                                </button>
+                                                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal"
+                                                        onclick="document.getElementById('error_message').innerText = ''">
+                                                    放弃
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal-2-prompt -->
+                                <div class="modal fade" id="prompt_modal" tabindex="-1">
+                                    <!-- modal-sm是让模态框变小 -->
+                                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5">
+                                                    提示
+                                                </h1>
+                                                <button type="button" class="btn-close"
+                                                        data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body text-center" style="padding: 40px;">
+                                                修改成功！
+                                            </div>
+                                            <div class="modal-footer" id="delete_modal_footer"
+                                                 style="justify-content: center">
+                                                <a type="button" class="btn btn-primary"
+                                                   data-bs-dismiss="modal">确定</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // 如果error_message存在
+    if ("{{ error_message }}" !== "") {
+        if ("{{ error_message }}" === "修改成功！") {
+            // 显示prompt-modal模态框，提示修改成功
+            new bootstrap.Modal(document.getElementById("prompt_modal")).show();
+        } else {
+            // 将错误信息展示出来
+            document.getElementById("error_message").innerText = "{{ error_message }}";
+            // 显示change_password-modal模态框
+            new bootstrap.Modal(document.getElementById("change_password_modal")).show();
+        }
+    }
+
+    // 提交表单
+    function form_submit() {
+        document.getElementById('change_password_form').submit();
+    }
+</script>
+</body>
+</html>
